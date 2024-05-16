@@ -1,0 +1,5 @@
+\standalonepreambles
+\subpreamble{chapters/theory.tex}
+\usepackage [subpreambles=true]{standalone}\ifstandalone \input {../settings+/settings}\fi 
+\endsubpreamble
+\endstandalonepreambles

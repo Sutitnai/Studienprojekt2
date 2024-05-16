@@ -1,0 +1,54 @@
+\documentclass[class=scrbook, crop=false]{standalone}
+\usepackage[subpreambles=true]{standalone}
+\ifstandalone
+    \input{../settings+/settings}
+\fi
+
+% ----------------------------------------------------------------------------
+%                               Theoretical Background
+% ----------------------------------------------------------------------------
+\begin{document}
+
+\ifstandalone
+    \selectlanguage{ngerman}  % Toggle ON/OFF
+
+    % Language-specific settings that change automatically
+    \input{settings+/language}
+\fi
+
+\chapter{Theoretischer Hintergrund}
+\section{Erdbeben}
+Der Begriff Erdbeben bezeichnet ein Ereignis das durch die Kolision oder Bewegung tektonischer Platten verursacht wird. Die durch dieses Ereignis entstandenen Energie wird in form von Wellen die durch den Boden propagieren verbreitet.
+\subsection{Bodenwellen}
+Ein Erdbeben verursacht verschiedene Formen an Bodenwellen mann unterscheidet in 
+
+\section{Messung von Erdbeben}
+
+\subsection{Die Richter Scala}
+
+\subsection{Spectrum Intesiti (SI)}
+
+
+
+% You can use this to add content for standalone documents if you like
+% In this case we would like to show the references.
+\ifstandalone
+    % Bibliography
+    \printbibliography[heading=bibintoc]                         \cleardoublepage
+
+% ----------------------------------------------------------------------------
+% Appendix and Glossary
+% ----------------------------------------------------------------------------
+%     \pagenumbering{Alph} % A, B, C..
+
+% %     % Appendix
+%     \input{chapters/appendix}                                          \clearpage
+
+% %     % Symbol list also counts as a glossary object
+%     \printglossary[type=main]  % main glossary
+
+% %     % Either print all entries or only used entries for all lists
+%     \glsaddallunused
+\fi
+
+\end{document}

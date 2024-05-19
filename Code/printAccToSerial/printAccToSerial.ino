@@ -4,7 +4,12 @@
 SensorXYZ accelerometer(SENSOR_ID_ACC);
 SensorXYZ gyro(SENSOR_ID_GYRO); 
 
+void givePythonSomeTime(){
+  while(!Serial){
 
+  }
+  delay(500);
+}
 
 void setup() {
   //activates Serialport and the Accelerometer and Gyro on the Nicla Sens ME
@@ -16,7 +21,10 @@ void setup() {
 }
 
 void loop() {
-  while(!Serial){}
+  if (!Serial){
+    givePythonSomeTime();
+  }
+  
   // deffines all the values later used
   float current_acc_x = 0;
   float current_acc_y;
@@ -36,7 +44,7 @@ void loop() {
   // Printing values to the Serialport seperatet by ";"" in order use the split() funktion in python to create a list of seperatet values.
   Serial.print(current_acc_x), Serial.print(";"), Serial.print(current_acc_y), Serial.print(";"), Serial.println(current_acc_z);
 
-  delay(200);
+  delay(50);
 
   
   

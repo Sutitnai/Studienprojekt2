@@ -15,12 +15,17 @@ def convrertStrToListOfFloat(string: str) -> list[float]:
         floatMesuremnts += [x]
     return floatMesuremnts
 
-def trackSerialPort(serialPort:sr.Serial) -> list[float]:
+#def trackSerialPort(serialPort:sr.Serial) -> list[float]:
     if serialPort.in_waiting > 1:
         serialInput = serialPort.readline()
-        serialString = serialInput.decode('Ascii')
-        mesurements = convrertStrToListOfFloat(serialString)
+        if len(serialInput) > 0:
+            serialString = serialInput.decode('Ascii')
+            mesurements = convrertStrToListOfFloat(serialString)
+        else:
+            tm.sleep(0.05)
+            trackSerialPort(serialPort=serialPort)
         return mesurements
+        
         
 
 def checkThreshhold(threshhold: float, mesurements: list[float]) -> bool:
@@ -38,17 +43,24 @@ def trackFiveMin(comPort:str, threshhold: float ):
     i = 0
     mesurementsOverThreshholde = 0
     print("conecting to serialport...")
-    serialPort = sr.Serial(port=comPort, baudrate=115200)
+    try:
+        serialPort = sr.Serial(port=comPort, baudrate=115200)
+    except sr.serialutil.SerialException:
+        print("Conection failed")
     print("Watching for earthquake....")
     while i <= 6000:
         i = i + 1
-        currentMesurement = trackSerialPort(serialPort=serialPort)
-        if checkThreshhold(mesurements=currentMesurement, threshhold=threshhold):
-            mesurementsOverThreshholde += 1
-        j = 0
-        for key in mesurements.keys():
-            mesurements[key] += [currentMesurement[j]]
-            j += 1
+        if serialPort.in_waiting > 1:
+            print("t")
+            serialInput = serialPort.readline()
+            serialString = serialInput.decode('Ascii')
+            currentMesurement = convrertStrToListOfFloat(serialString)
+            if checkThreshhold(mesurements=currentMesurement, threshhold=threshhold):
+                mesurementsOverThreshholde += 1
+            j = 0
+            for key in mesurements.keys():
+                mesurements[key] += [currentMesurement[j]]
+                j += 1
     serialPort.close()  
     if mesurementsOverThreshholde >= 600:
         return mesurements
@@ -73,15 +85,16 @@ def monitorEarthquake(comPort: str, filePath:str, threshhold:float) -> bool:
 print("Welcome!!")
 comPort = input("Please enter the COM port that is conected to the Sensor: ")
 print("Youve Selected: " + comPort)
+fileName = input("Please select a file name: ")
 filePath = input("Please enter Path for saved Data: ")
 print("Youve Selected: " + filePath)
 threshhold = float(input("Please enter Threshhold: "))
 print("Youve Selected: " + str(threshhold))
 
-
+fullPathe = filePath + "/" + fileName
 while(1):
     pathUsed = filePath + "/mesurement" + str(mesurementsTaken)
-    if monitorEarthquake(comPort=comPort, filePath=pathUsed, threshhold=threshhold):
+    if monitorEarthquake(comPort=comPort, filePath=fullPathe, threshhold=threshhold):
         mesurementsTaken += 1
     else:
         pass

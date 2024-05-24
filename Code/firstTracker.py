@@ -97,4 +97,4 @@ while(1):
     if monitorEarthquake(comPort=comPort, filePath=fullPathe, threshhold=threshhold):
         mesurementsTaken += 1
     else:
-        pass
+        tm.sleep(5)

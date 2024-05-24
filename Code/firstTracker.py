@@ -1,6 +1,7 @@
 import serial as sr
 import pandas as pd
 import time as tm
+from typing import Union
 
 mesurementsTaken = 0
 
@@ -11,7 +12,11 @@ def convrertStrToListOfFloat(string: str) -> list[float]:
     floatMesuremnts = []
     strMesurements = string.split(";")
     for mesurement in strMesurements:
-        x = float(mesurement)
+        try:
+            x = float(mesurement)
+        except ValueError:
+            x = 0.0
+        
         floatMesuremnts += [x]
     return floatMesuremnts
 
@@ -37,7 +42,7 @@ def checkThreshhold(threshhold: float, mesurements: list[float]) -> bool:
             pass
     return ret
 
-def trackFiveMin(comPort:str, threshhold: float ):
+def trackFiveMin(comPort:str, threshhold: float ) -> Union[bool, dict]:
     """Tracks all the input from the serial port for 5min. if there is movement for over 30sec it returns the dict else it returns False."""
     mesurements = {"X":[], "Y":[], "Z":[]}
     i = 0
@@ -45,15 +50,19 @@ def trackFiveMin(comPort:str, threshhold: float ):
     print("conecting to serialport...")
     try:
         serialPort = sr.Serial(port=comPort, baudrate=115200)
+        print("Conected")
+        tm.sleep(0.07)
     except sr.serialutil.SerialException:
         print("Conection failed")
     print("Watching for earthquake....")
-    while i <= 6000:
-        i = i + 1
+    while i <= 1200:
         if serialPort.in_waiting > 1:
-            print("t")
+            i = i + 1
             serialInput = serialPort.readline()
-            serialString = serialInput.decode('Ascii')
+            try:
+                serialString = serialInput.decode('Ascii')
+            except UnicodeDecodeError:
+                return False
             currentMesurement = convrertStrToListOfFloat(serialString)
             if checkThreshhold(mesurements=currentMesurement, threshhold=threshhold):
                 mesurementsOverThreshholde += 1
@@ -61,8 +70,10 @@ def trackFiveMin(comPort:str, threshhold: float ):
             for key in mesurements.keys():
                 mesurements[key] += [currentMesurement[j]]
                 j += 1
+
     serialPort.close()  
-    if mesurementsOverThreshholde >= 600:
+
+    if mesurementsOverThreshholde >= 60:
         return mesurements
     else:
         return False
@@ -70,7 +81,7 @@ def trackFiveMin(comPort:str, threshhold: float ):
 def monitorEarthquake(comPort: str, filePath:str, threshhold:float) -> bool:
     mesurement = trackFiveMin(comPort=comPort, threshhold=threshhold)
     if mesurement == False:
-        print("No earthquake deteckted in the last 5 min.")
+        print("No earthquake deteckted.")
         return False
     else:
         currentMesurement = pd.DataFrame(mesurement)
@@ -91,9 +102,9 @@ print("Youve Selected: " + filePath)
 threshhold = float(input("Please enter Threshhold: "))
 print("Youve Selected: " + str(threshhold))
 
-fullPathe = filePath + "/" + fileName
+
 while(1):
-    pathUsed = filePath + "/mesurement" + str(mesurementsTaken)
+    fullPathe = filePath + "/" + fileName + "_" + str(mesurementsTaken) +".csv"
     if monitorEarthquake(comPort=comPort, filePath=fullPathe, threshhold=threshhold):
         mesurementsTaken += 1
     else:

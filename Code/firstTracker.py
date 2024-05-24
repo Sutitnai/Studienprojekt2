@@ -59,7 +59,10 @@ def trackFiveMin(comPort:str, threshhold: float ) -> Union[bool, dict]:
         if serialPort.in_waiting > 1:
             i = i + 1
             serialInput = serialPort.readline()
-            serialString = serialInput.decode('Ascii')
+            try:
+                serialString = serialInput.decode('Ascii')
+            except UnicodeDecodeError:
+                return False
             currentMesurement = convrertStrToListOfFloat(serialString)
             if checkThreshhold(mesurements=currentMesurement, threshhold=threshhold):
                 mesurementsOverThreshholde += 1

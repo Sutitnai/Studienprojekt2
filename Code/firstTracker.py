@@ -40,6 +40,7 @@ def checkThreshhold(threshhold: float, mesurements: list[float]) -> bool:
             ret = True
         else:
             pass
+    print(ret)
     return ret
 
 def trackFiveMin(comPort:str, threshhold: float ) -> Union[bool, dict]:
@@ -108,4 +109,4 @@ while(1):
     if monitorEarthquake(comPort=comPort, filePath=fullPathe, threshhold=threshhold):
         mesurementsTaken += 1
     else:
-        tm.sleep(5)
+        pass

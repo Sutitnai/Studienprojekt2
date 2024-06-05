@@ -1,4 +1,5 @@
 \babel@toc {english}{}\relax 
+\babel@toc {ngerman}{}\relax 
 \contentsline {chapter}{\numberline {1}Theoretischer Hintergrund}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Erdbeben}{1}{section.1.1}%
 \contentsline {subsection}{\numberline {1.1.1}Bodenwellen}{1}{subsection.1.1.1}%

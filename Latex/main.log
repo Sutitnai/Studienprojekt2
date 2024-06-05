@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2024.5.16)  5 JUN 2024 15:59
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2024.5.16)  5 JUN 2024 16:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2049,8 +2049,8 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Overfull \hbox (8.58415pt too wide) in paragraph at lines 205--205
-[]\TU/Arial(0)/m/n/24 Studienprojekt Sustainable Systems Engeneer-
+Overfull \hbox (0.59196pt too wide) in paragraph at lines 205--205
+[]\TU/Arial(0)/m/n/24 Studienprojekt Sustainable Systems Engenee-
  []
 
 
@@ -2064,7 +2064,7 @@ Overfull \hbox (7.0304pt too wide) in paragraph at lines 205--205
  []
 
 
-Overfull \hbox (33.1051pt too wide) in paragraph at lines 205--205
+Overfull \hbox (28.94594pt too wide) in paragraph at lines 205--205
 \TU/Arial(0)/m/n/30 bebenüberwachung: Untersuchung der
  []
 
@@ -2102,79 +2102,20 @@ File: images/cover/Logo_Uni.eps Graphic file (type eps)
 
 
 
-] [2
-
-
-]
-*geometry* verbose mode - [ newgeometry ] result:
-* driver: xetex
-* paper: <default>
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: twoside 
-* h-part:(L,W,R)=(113.811pt, 412.56505pt, 71.13188pt)
-* v-part:(T,H,B)=(71.13188pt, 702.78317pt, 71.13188pt)
-* \paperwidth=597.50793pt
-* \paperheight=845.04694pt
-* \textwidth=412.56505pt
-* \textheight=702.78317pt
-* \oddsidemargin=41.54102pt
-* \evensidemargin=-1.1381pt
-* \topmargin=-41.0131pt
-* \headheight=18.125pt
-* \headsep=21.75pt
-* \topskip=12.0pt
-* \footskip=50.75pt
-* \marginparwidth=99.58466pt
-* \marginparsep=12.8401pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidetrue
-* \@mparswitchtrue
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
-
-
+])
+Package tocbasic Info: character protrusion at toc deactivated on input line 10
+7.
+ (main.toc
 (C:\Users\Administrator\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-cm
 r.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
-)
-! Undefined control sequence.
-\decleration ...supervisorstitle } & \@supervisor 
-                                                  ,\\ & \@supervisorDepartme...
-l.206 \decleration
-                  
-? 
-! Undefined control sequence.
-\decleration ...isor ,\\ & \@supervisorDepartment 
-                                                  \\ & \@supervisorChair \\ ...
-l.206 \decleration
-                  
-? 
-! Undefined control sequence.
-\decleration ...Department \\ & \@supervisorChair 
-                                                  \\ & \\ \textbf {\declarat...
-l.206 \decleration
-                  
-? 
-[3
-
-]) [4
-
-
-]
-Package tocbasic Info: character protrusion at toc deactivated on input line 10
-7.
- (main.toc)
+))
 \tf@toc=\write11
 \openout11 = `main.toc'.
 
  [1
+
 
 
 ] [2
@@ -2203,23 +2144,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 23--25
 
  []
 
-File: images/theory/aufzeichnungMechanwellAus.jpg Graphic file (type bmp)
-<images/theory/aufzeichnungMechanwellAus.jpg>
+File: ./images/theory/aufzeichnungMechanwellAus.jpg Graphic file (type bmp)
+<./images/theory/aufzeichnungMechanwellAus.jpg>
 
-Underfull \vbox (badness 3769) has occurred while \output is active []
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \vbox (badness 4254) has occurred while \output is active []
 
  [1
 
 
-]
-! Undefined control sequence.
-<recently read> \aprox 
-                       
-l.43 ...al} = 1~\frac{cm}{s^2}$ somit sind $\aprox
-                                                   980 ~\mathrm{Gal} = 1~\ma...
-
-? 
-) [2]
+])
+[2]
 
 LaTeX Warning: Empty bibliography on input line 130.
 
@@ -2249,12 +2186,12 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 53827 strings out of 409616
- 1144353 string characters out of 5772368
- 2224262 words of memory out of 5000000
- 75170 multiletter control sequences out of 15000+600000
+ 53831 strings out of 409616
+ 1144458 string characters out of 5772368
+ 2219266 words of memory out of 5000000
+ 75174 multiletter control sequences out of 15000+600000
  562047 words of font info for 75 fonts, out of 8000000 for 9000
  1350 hyphenation exceptions out of 8191
- 129i,19n,124p,10928b,4150s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 129i,19n,124p,10928b,5633s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (9 pages).
+Output written on main.pdf (6 pages).

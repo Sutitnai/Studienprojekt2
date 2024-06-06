@@ -20,18 +20,34 @@ def convrertStrToListOfFloat(string: str) -> list[float]:
         floatMesuremnts += [x]
     return floatMesuremnts
 
-#def trackSerialPort(serialPort:sr.Serial) -> list[float]:
-    if serialPort.in_waiting > 1:
+
+        
+def correctionFaktor(comPort: str) -> list:
+    correction = [0,0,0]
+    sumList = [0,0,0]
+    i = 0
+    print("connecting to serial Port")
+    try:
+        serialPort = sr.Serial(port=comPort, baudrate=115200)
+        print("conected!!")
+    except sr.serialutil.SerialException:
+        print("Faild to conect to Serial Port")
+    print("Calculating corection faktor")
+    while i <= 60:
+        i+= 1
         serialInput = serialPort.readline()
-        if len(serialInput) > 0:
+        try:
             serialString = serialInput.decode('Ascii')
-            mesurements = convrertStrToListOfFloat(serialString)
-        else:
-            tm.sleep(0.05)
-            trackSerialPort(serialPort=serialPort)
-        return mesurements
-        
-        
+            currentMesurement = convrertStrToListOfFloat(serialString)
+            for j in range(len(sumList)):
+                sumList[j] = sumList[j] + currentMesurement[j]
+        except UnicodeDecodeError:
+            pass
+        for j in range(len(sumList)):
+            correction[j] = sumList[j]/100
+    print("X,Y,Z")
+    print(correction)
+    return correction
 
 def checkThreshhold(threshhold: float, mesurements: list[float]) -> bool:
     ret = False
@@ -42,7 +58,7 @@ def checkThreshhold(threshhold: float, mesurements: list[float]) -> bool:
             pass
     return ret
 
-def trackFiveMin(comPort:str, threshhold: float ) -> Union[bool, dict]:
+def track(comPort:str, threshhold: float ) -> Union[bool, dict]:
     """Tracks all the input from the serial port for 5min. if there is movement for over 30sec it returns the dict else it returns False."""
     mesurements = {"X":[], "Y":[], "Z":[]}
     i = 0
@@ -64,6 +80,8 @@ def trackFiveMin(comPort:str, threshhold: float ) -> Union[bool, dict]:
             except UnicodeDecodeError:
                 return False
             currentMesurement = convrertStrToListOfFloat(serialString)
+            for x in range(len(currentMesurement)):
+                currentMesurement[x] = currentMesurement[x] - correction[x]
             if checkThreshhold(mesurements=currentMesurement, threshhold=threshhold):
                 mesurementsOverThreshholde += 1
             j = 0
@@ -72,14 +90,14 @@ def trackFiveMin(comPort:str, threshhold: float ) -> Union[bool, dict]:
                 j += 1
 
     serialPort.close()  
-
+    print(mesurementsOverThreshholde)
     if mesurementsOverThreshholde >= 60:
         return mesurements
     else:
         return False
     
 def monitorEarthquake(comPort: str, filePath:str, threshhold:float) -> bool:
-    mesurement = trackFiveMin(comPort=comPort, threshhold=threshhold)
+    mesurement = track(comPort=comPort, threshhold=threshhold)
     if mesurement == False:
         print("No earthquake deteckted.")
         return False
@@ -101,10 +119,14 @@ filePath = input("Please enter Path for saved Data: ")
 print("Youve Selected: " + filePath)
 threshhold = float(input("Please enter Threshhold: "))
 print("Youve Selected: " + str(threshhold))
+counter = -1
 
 
 while(1):
     fullPathe = filePath + "/" + fileName + "_" + str(mesurementsTaken) +".csv"
+    counter += 1
+    if not counter % 5:
+        correction = correctionFaktor(comPort=comPort)
     if monitorEarthquake(comPort=comPort, filePath=fullPathe, threshhold=threshhold):
         mesurementsTaken += 1
     else:

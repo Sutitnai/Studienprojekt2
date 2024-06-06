@@ -56,6 +56,7 @@ def checkThreshhold(threshhold: float, mesurements: list[float]) -> bool:
             ret = True
         else:
             pass
+    print(ret)
     return ret
 
 def track(comPort:str, threshhold: float ) -> Union[bool, dict]:

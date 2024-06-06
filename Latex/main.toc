@@ -1,8 +1,11 @@
 \babel@toc {english}{}\relax 
+\babel@toc {ngerman}{}\relax 
 \contentsline {chapter}{\numberline {1}Theoretischer Hintergrund}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Erdbeben}{1}{section.1.1}%
 \contentsline {subsection}{\numberline {1.1.1}Bodenwellen}{1}{subsection.1.1.1}%
-\contentsline {section}{\numberline {1.2}Messung von Erdbeben}{1}{section.1.2}%
-\contentsline {subsection}{\numberline {1.2.1}Die Richter Skala}{1}{subsection.1.2.1}%
-\contentsline {subsection}{\numberline {1.2.2}Spectrum Intesiti (SI)}{1}{subsection.1.2.2}%
+\contentsline {section}{\numberline {1.2}Erdbebenmessung}{2}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Die Einheiten}{2}{subsection.1.2.1}%
+\contentsline {subsubsection}{\nonumberline Gal}{2}{subsubsection*.3}%
+\contentsline {subsection}{\numberline {1.2.2}Die Richter Skala}{2}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Spectrum Intesiti (SI)}{2}{subsection.1.2.3}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

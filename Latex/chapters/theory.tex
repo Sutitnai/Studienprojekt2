@@ -18,43 +18,48 @@
 
 \chapter{Theoretischer Hintergrund}
 \section{Erdbeben}
-Der Begriff Erdbeben bezeichnet ein Ereignis das durch die Kolision oder Bewegung tektonischer Platten verursacht wird. Die durch dieses Ereignis entstandenen Energie wird in form von Wellen die durch den Boden propagieren verbreitet.
+Der Begriff Erdbeben bezeichnet ein Ereignis, das durch die Kollision oder Bewegung tektonischer Platten verursacht wird. Die durch dieses Ereignis entstandene Energie wird in Form von Wellen, die durch den Boden propagieren, verbreitet.
 \subsection{Bodenwellen}
-Ein Erdbeben verursacht verschiedene Formen an Bodenwellen mann unterscheidet in  \textit{P-Wellen} und \textit{S-Wellen}.\\
+Ein Erdbeben verursacht verschiedene Formen an Bodenwellen. Man unterscheidet in \textit{P-Wellen} und \textit{S-Wellen}.\\
 \begin{itemize}
 \item
-P-Wellen bewegen sichm it Geschwindigkeiten von bis zu $8~\mathrm{\frac{km}{s}}$  und sind somit die schnellsten von einem Erdbeben ausgelößten Bodenwellen. Sie verlieren jedoch schon nach kurzer Zeit einen großen Teil ihrer Energie.
+P-Wellen bewegen sich mit Geschwindigkeiten von bis zu $8~\mathrm{\frac{km}{s}}$ und sind somit die schnellsten von einem Erdbeben ausgelösten Bodenwellen. Sie verlieren jedoch schon nach kurzer Zeit einen großen Teil ihrer Energie.
 \item
-S-Wellwen bewwgen sich mit 60 bis 80~\% der geschwindigkeit von P-Wellen verlieren allerdings auch deutlich langsamer an Energie wesshalb sie für die größere verwüstung sorgen.
+S-Wellen bewegen sich mit 60 bis 80~\% der Geschwindigkeit von P-Wellen, verlieren allerdings auch deutlich langsamer an Energie, weshalb sie für die größere Verwüstung sorgen.
 \end{itemize}
-Das verhalten von S-. und P-Wellen Abb.~\ref{fig: wellen} ist auf den auswertungen eines Seismografen deutlich zu erkennen.
-%herausfinden wie man grafiken implementiert
+Das Verhalten von S- und P-Wellen ist auf den Auswertungen eines Seismografen in Abb.~\ref{fig: wellen} deutlich zu erkennen.
+% herausfinden, wie man Grafiken implementiert
 \begin{figure}[h]
 	\includegraphics[width=0.\textwidth]{/theory/aufzeichnungMechanwellAus.jpg}
 	\label{fig: wellen}
-	\caption{Aufzeichnung eines Seismographen in der man S-. und P-Wellen erkennen kann.}
-
+	\caption{Aufzeichnung eines Seismografen, in der man S- und P-Wellen erkennen kann.}
 \end{figure}
 
 \section{Erdbebenmessung}
-Die Seismologie beschäfftigt sich viel mit eigenen einheiten und Skalen die man so in keinem anderen Wissenschafltichen feld wieder findet. Um die nachfolgende analyse der Gemessenen daten zu verstehen ist ein Grundlegendes wissen dieser Einheiten und Skalen unabdingbar.
+Die Seismologie beschäftigt sich viel mit eigenen Einheiten und Skalen, die man so in keinem anderen wissenschaftlichen Feld wiederfindet. Um die nachfolgende Analyse der gemessenen Daten zu verstehen, ist ein grundlegendes Wissen dieser Einheiten und Skalen unabdingbar.
+
+\subsection{Magnitude und Intensität}
+Die Magnitude (Stärke) und Intensität eines Erdbebens sind zwei verschiedene Größen, die oft miteinander verwechselt werden, obwohl sie unterschiedliche Aspekte des Erdbebens messen. \\
+\\
+Die Magnitude beschreibt die Menge an Energie, die von einem Erdbeben an seinem Ursprung, dem Hypozentrum, freigesetzt wird. Der Wert ist unabhängig von seinem Messort und wird auf der Richter-Skala angegeben.\\
+\\
+Die Intensität hingegen beschreibt die Stärke des Erdbebens an einem bestimmten Ort. Sie hängt von den Gegebenheiten des Ortes ab, an dem gemessen wird, und wird in der Modified Mercalli Intensity Scale (MMI) oder der Rossi-Forel-Skala angegeben. Sie gibt also an, wie stark man das Beben an dem bestimmten Punkt fühlt.
+
 \subsection{Die Einheiten}
 \subsubsection{Gal}
-Gal ist eine beschleunigungs einheit $1~\mathrm{Gal} = 1~\frac{cm}{s^2}$ somit sind $ 980 ~\mathrm{Gal} \approx 1~\mathrm{G}$
+Gal ist eine Beschleunigungseinheit $1~\mathrm{Gal} = 1~\frac{cm}{s^2}$, somit sind $ 980 ~\mathrm{Gal} \approx 1~\mathrm{G}$. Gal wird nicht als SI-Einheit kategorisiert, dennoch ist es als Einheit in der Seismographie zugelassen.
 
+\subsubsection{SI}
+Der SI-Wert \textit{Spektrale Intensität} beschreibt die Zerstörungskraft eines Erdbebens bezogen auf ein bestimmtes Gebäude. Sie wird aus dem Geschwindigkeitsspektrum \textit{Sv} berechnet und beschreibt die Geschwindigkeitsantwort eines Gebäudes.  Da er sich aus dem Geschwindigkeitsspektrum berechnet lässt sich leicht zwischen Erdbeben und 
 
-
-\subsection{Die Richter Skala}
-
-\subsection{Spectrum Intesiti (SI)}
-
-
+\subsection{Die Richter-Skala}
 
 % You can use this to add content for standalone documents if you like
 % In this case we would like to show the references.
 \ifstandalone
     % Bibliography
-    \printbibliography[heading=bibintoc]                         \cleardoublepage
+    \printbibliography[heading=bibintoc]                         
+    \cleardoublepage
 
 % ----------------------------------------------------------------------------
 % Appendix and Glossary
@@ -62,7 +67,8 @@ Gal ist eine beschleunigungs einheit $1~\mathrm{Gal} = 1~\frac{cm}{s^2}$ somit s
 %     \pagenumbering{Alph} % A, B, C..
 
 % %     % Appendix
-%     \input{chapters/appendix}                                          \clearpage
+%     \input{chapters/appendix}                                          
+%     \clearpage
 
 % %     % Symbol list also counts as a glossary object
 %     \printglossary[type=main]  % main glossary

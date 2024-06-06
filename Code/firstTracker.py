@@ -5,7 +5,7 @@ from typing import Union
 
 mesurementsTaken = 0
 
-
+#Nutzloser Kommentar
 
 
 def convrertStrToListOfFloat(string: str) -> list[float]:

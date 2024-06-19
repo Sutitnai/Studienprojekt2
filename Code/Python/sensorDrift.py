@@ -1,9 +1,7 @@
 import serial as sr
-import pandas as pd
 from matplotlib import pyplot as plt
 import time as tm
 import timeit as tmt
-from typing import Union
 import statistics
 import numpy as np
 
@@ -18,6 +16,8 @@ def convrertStrToListOfFloat(string: str) -> list[float]:
     - list[float]: List of floats parsed from the input string. Non-convertible
       entries are replaced with 0.0.
     """
+
+    bitsToMs = 40181.76
     floatMesuremnts = []  # Initialize an empty list to store float measurements
     strMesurements = string.split(";")  # Split the input string by semicolons
     for mesurement in strMesurements:
@@ -25,7 +25,7 @@ def convrertStrToListOfFloat(string: str) -> list[float]:
             x = float(mesurement)  # Convert each measurement to float
         except ValueError:
             x = 0.0  # If conversion fails, set the value to 0.0
-        floatMesuremnts += [x]  # Add the float value to the list
+        floatMesuremnts += [x/bitsToMs]  # Add the float value to the list
     return floatMesuremnts
 
 def trackSerial(comPort: str, mesureTm: int) -> tuple[bool, dict[str, list]]:
@@ -54,6 +54,8 @@ def trackSerial(comPort: str, mesureTm: int) -> tuple[bool, dict[str, list]]:
     print("monitoring Sensor...")    
     startTime = tmt.default_timer()  # Record the start time
     while (tmt.default_timer() - startTime) < float(mesureTm):
+        remTime = round((mesureTm -(tmt.default_timer() - startTime)) / 60, 2) #calculates the remaining time for the mesurement
+        print("\r>> Time remaining: {}min.".format(remTime), end='')  #updates the remaining time for the user
         if serialPort.in_waiting > 1:  # Check if there is data waiting in the serial buffer
             serialInput = serialPort.readline()  # Read a line of input from the serial port
             try:
@@ -114,7 +116,7 @@ def plotDeviation(deviationDict: dict[str, list], numBars: int, time: int):
         ax.bar(bin_centers, hist, width=bin_width)  # Create the bar plot
         ax.set_xlabel('Deviation Range')  # Set the x-axis label
         ax.set_ylabel('Frequency')  # Set the y-axis label
-        ax.set_title(f'Bar Plot of Deviations (bit) for {key} axis. Over {time} seconds.')  # Set the title
+        ax.set_title(f'Bar Plot of Deviations (m/s^2) for {key} axis. Over {time} seconds.')  # Set the title
         plt.show()  # Display the plot
 
 def mangeMesurement(comPort: str, mesuringTime: int, numBars: int):

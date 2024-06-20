@@ -17,7 +17,6 @@ def convert_str_to_list_of_float(string: str) -> list[float]:
     - list[float]: List of floats parsed from the input string. Non-convertible
       entries are replaced with 0.0.
     """
-
     bits_to_ms = 40181.76
     float_measurements = []  # Initialize an empty list to store float measurements
     str_measurements = string.split(";")  # Split the input string by semicolons
@@ -26,7 +25,7 @@ def convert_str_to_list_of_float(string: str) -> list[float]:
             x = float(measurement)  # Convert each measurement to float
         except ValueError:
             x = 0.0  # If conversion fails, set the value to 0.0
-        float_measurements.append(x / 1)  # Add the float value to the list
+        float_measurements.append(x / bits_to_ms)  # Add the float value to the list
     while len(float_measurements) < 3:
         float_measurements.append(0.0)
     return float_measurements
@@ -91,6 +90,29 @@ def calc_mean(measurements_dict: dict[str, list[float]]) -> list[float]:
         means.append(mean)
     return means 
 
+def calc_basline(com_port: str):
+    """
+    Calculate the baseline measurement for drift correction.
+
+    Args:
+    - com_port (str): The COM port to connect to.
+
+    Returns:
+    - None
+    """
+    print("Finding Baseline for drift...")
+    success_flag, baseline_dict = track_serial(com_port=com_port, measure_time=30)
+    if success_flag:
+        baseline = calc_mean(baseline_dict)
+    else:
+        baseline = calc_basline(com_port=com_port)
+        print("Failed retrying")
+    print("Your Baseline is:")
+    print(baseline)
+    with open("saved_baseline.pkl", "wb") as f:
+        pickle.dump(baseline, f)
+    print("Saved baseline.")
+
 def create_storage_for_data():
     """
     Create a storage file for measurement data.
@@ -123,12 +145,15 @@ def plot_data():
     """
     with open("saved_measurement.pkl", "rb") as file:
         measurements_dict = pickle.load(file)
+    
+    with open("saved_baseline.pkl", "rb") as file:
+        baseline = pickle.load(file)
 
     list_x, list_y, list_z = [], [], []
     for measurement in measurements_dict["measurement"]:
-        list_x.append(measurement[0])
-        list_y.append(measurement[1])
-        list_z.append(measurement[2])
+        list_x.append(measurement[0] - baseline[0])
+        list_y.append(measurement[1] - baseline[1])
+        list_z.append(measurement[2] - baseline[2])
 
     plt.plot(measurements_dict["Datetime"], list_x, label="X")
     plt.plot(measurements_dict["Datetime"], list_y, label="Y")
@@ -150,7 +175,7 @@ def handle_measurements(com_port: str, measuring_time: int, num_measurements: in
     - measuring_time (int): Time duration for each measurement in seconds.
     - num_measurements (int): Number of measurements to take.
     """
-    create_storage_for_data()
+    calc_basline(com_port=com_port)
     for i in range(num_measurements):
         remaining_measurements = num_measurements - i
         print("Measurements remaining: " + str(remaining_measurements))

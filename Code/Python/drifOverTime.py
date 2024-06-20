@@ -26,7 +26,7 @@ def convert_str_to_list_of_float(string: str) -> list[float]:
         except ValueError:
             x = 0.0  # If conversion fails, set the value to 0.0
         float_measurements.append(x / bits_to_ms)  # Add the float value to the list
-    while len(float_measurements) < 3:
+    while len(float_measurements) < 3:  # Ensure there are at least 3 elements in the list
         float_measurements.append(0.0)
     return float_measurements
 
@@ -86,7 +86,7 @@ def calc_mean(measurements_dict: dict[str, list[float]]) -> list[float]:
     """
     means = []
     for key in measurements_dict.keys():
-        mean = statistics.mean(measurements_dict[key])
+        mean = statistics.mean(measurements_dict[key])  # Calculate the mean for each axis
         means.append(mean)
     return means 
 
@@ -105,21 +105,21 @@ def calc_basline(com_port: str):
     if success_flag:
         baseline = calc_mean(baseline_dict)
     else:
-        baseline = calc_basline(com_port=com_port)
+        baseline = calc_basline(com_port=com_port)  # Retry if failed
         print("Failed retrying")
     print("Your Baseline is:")
     print(baseline)
     with open("saved_baseline.pkl", "wb") as f:
-        pickle.dump(baseline, f)
+        pickle.dump(baseline, f)  # Save the baseline to a file
     print("Saved baseline.")
 
 def create_storage_for_data():
     """
     Create a storage file for measurement data.
     """
-    measurements = {"Datetime": [], "measurement": []}
+    measurements = {"Datetime": [], "measurement": []}  # Initialize storage dictionary
     with open("saved_measurement.pkl", "wb") as file:
-        pickle.dump(measurements, file)
+        pickle.dump(measurements, file)  # Save the empty dictionary to a file
         print('Data has been saved.')
 
 def save_data(measurements: list[float]):
@@ -130,31 +130,32 @@ def save_data(measurements: list[float]):
     - measurements (list[float]): List of measurement data to be saved.
     """
     with open("saved_measurement.pkl", "rb") as file:
-        measurements_dict = pickle.load(file)
+        measurements_dict = pickle.load(file)  # Load existing data
 
     now = datetime.now()
     dt_string = now.strftime("%H:%M:%S")
-    measurements_dict["Datetime"].append(dt_string)
-    measurements_dict["measurement"].append(measurements)
+    measurements_dict["Datetime"].append(dt_string)  # Add current time
+    measurements_dict["measurement"].append(measurements)  # Add measurements
     with open("saved_measurement.pkl", "wb") as file:
-        pickle.dump(measurements_dict, file)
+        pickle.dump(measurements_dict, file)  # Save updated data
 
 def plot_data():
     """
     Plot the measurement data.
     """
     with open("saved_measurement.pkl", "rb") as file:
-        measurements_dict = pickle.load(file)
+        measurements_dict = pickle.load(file)  # Load measurement data
     
     with open("saved_baseline.pkl", "rb") as file:
-        baseline = pickle.load(file)
+        baseline = pickle.load(file)  # Load baseline data
 
     list_x, list_y, list_z = [], [], []
     for measurement in measurements_dict["measurement"]:
-        list_x.append(measurement[0] - baseline[0])
+        list_x.append(measurement[0] - baseline[0])  # Subtract baseline from measurements
         list_y.append(measurement[1] - baseline[1])
         list_z.append(measurement[2] - baseline[2])
 
+    # Plot the measurements with labels
     plt.plot(measurements_dict["Datetime"], list_x, label="X")
     plt.plot(measurements_dict["Datetime"], list_y, label="Y")
     plt.plot(measurements_dict["Datetime"], list_z, label="Z")
@@ -175,21 +176,22 @@ def handle_measurements(com_port: str, measuring_time: int, num_measurements: in
     - measuring_time (int): Time duration for each measurement in seconds.
     - num_measurements (int): Number of measurements to take.
     """
-    calc_basline(com_port=com_port)
+    calc_basline(com_port=com_port)  # Calculate and save baseline
     for i in range(num_measurements):
         remaining_measurements = num_measurements - i
         print("Measurements remaining: " + str(remaining_measurements))
         success_flag, measurements_dict = track_serial(com_port=com_port, measure_time=measuring_time)
         if success_flag:
-            save_data(calc_mean(measurements_dict))
+            save_data(calc_mean(measurements_dict))  # Save mean of measurements
         else:
             print("Failed!")
     
     print("Finished all measurements, plotting now...")
-    plot_data()
+    plot_data()  # Plot the data
     print("Done")
 
 if __name__ == "__main__":
+    # Main script execution
     print("Welcome")
     com_port = input("Enter the COM port: ")
     print("You've selected: " + com_port)

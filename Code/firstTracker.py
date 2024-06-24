@@ -2,6 +2,7 @@ import serial as sr
 import pandas as pd
 import time as tm
 from typing import Union
+from datetime import datetime
 
 mesurementsTaken = 0
 bitsToMs = 40181.76
@@ -155,7 +156,6 @@ def monitorEarthquake(comPort: str, filePath: str, threshhold: float) -> bool:
 print("Welcome!!")
 comPort = input("Please enter the COM port that is connected to the Sensor: ")
 print("You've selected: " + comPort)
-fileName = input("Please select a file name: ")
 filePath = input("Please enter Path for saved Data: ")
 print("You've selected: " + filePath)
 threshhold = float(input("Please enter Threshold: "))
@@ -164,6 +164,8 @@ counter = -1
 
 # Continuously monitor for earthquakes
 while True:
+    now = datetime.now()
+    fileName = now.strftime("%d.%m.%y %H:%M:%S")
     fullPath = filePath + "/" + fileName + "_" + str(mesurementsTaken) + ".csv"
     counter += 1
     if not counter % 5:

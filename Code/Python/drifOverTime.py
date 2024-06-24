@@ -176,6 +176,7 @@ def handle_measurements(com_port: str, measuring_time: int, num_measurements: in
     - measuring_time (int): Time duration for each measurement in seconds.
     - num_measurements (int): Number of measurements to take.
     """
+    create_storage_for_data()
     calc_basline(com_port=com_port)  # Calculate and save baseline
     for i in range(num_measurements):
         remaining_measurements = num_measurements - i

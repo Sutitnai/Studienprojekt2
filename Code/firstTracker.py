@@ -86,11 +86,12 @@ def checkThreshhold(threshhold: float, mesurements: list[float]) -> bool:
 
 def track(comPort: str, threshhold: float, mesureing_time: int) -> Union[bool, dict]:
     """
-    Track all input from the serial port for 5 minutes. If there is movement for over 30 seconds, return the data; otherwise, return False.
+    Track all input from the serial port for a specified time. If there is movement over the threshold for more than 30 seconds, return the data; otherwise, return False.
     
     Args:
     - comPort (str): The COM port to connect to.
     - threshhold (float): The threshold value for detecting significant movement.
+    - mesureing_time (int): The duration for monitoring in minutes.
     
     Returns:
     - Union[bool, dict]: Dictionary of measurements if movement is detected; otherwise, False.
@@ -98,22 +99,23 @@ def track(comPort: str, threshhold: float, mesureing_time: int) -> Union[bool, d
     mesurements = {"X": [], "Y": [], "Z": []}  # Initialize a dictionary to store measurements
     i = 0
     mesurementsOverThreshholde = 0
-    print("connecting to serial port...")
+    print("Connecting to serial port...")
     try:
         # Attempt to connect to the specified serial port
         serialPort = sr.Serial(port=comPort, baudrate=115200)
-        print("connected")
+        print("Connected")
         tm.sleep(0.07)  # Wait briefly to ensure the connection is established
     except sr.serialutil.SerialException:
         print("Connection failed")
+        return False  # Return False if the connection fails
     print("Watching for earthquake...")
     start_time = default_timer()
     while (default_timer() - start_time) < float(mesureing_time * 60):
         if keyboard.is_pressed('esc'):
-            print("Exeting mesuring loop...")
+            print("Exiting measuring loop...")
             break
 
-        remaining_time = round((mesureing_time * 60 - (default_timer() - start_time))/60, 2)
+        remaining_time = round((mesureing_time * 60 - (default_timer() - start_time)) / 60, 2)
         print("\r>> Time remaining: {} min.".format(remaining_time), end='')  # Update the remaining time for the user
         if serialPort.in_waiting > 1:  # Check if there is data waiting in the serial buffer
             i += 1
@@ -121,7 +123,7 @@ def track(comPort: str, threshhold: float, mesureing_time: int) -> Union[bool, d
             try:
                 serialString = serialInput.decode('Ascii')  # Decode the input as an ASCII string
             except UnicodeDecodeError:
-                return False
+                return False  # Return False if there is a decoding error
             currentMesurement = convrertStrToListOfFloat(serialString)  # Convert the string to a list of floats
             for x in range(len(currentMesurement)):
                 currentMesurement[x] = currentMesurement[x] - correction[x]  # Apply correction factor
@@ -147,6 +149,7 @@ def monitorEarthquake(comPort: str, filePath: str, threshhold: float, mesuring_t
     - comPort (str): The COM port to connect to.
     - filePath (str): The file path to save the data.
     - threshhold (float): The threshold value for detecting significant movement.
+    - mesuring_time (int): The duration for monitoring in minutes.
     
     Returns:
     - bool: True if an earthquake is detected and data is saved, otherwise False.

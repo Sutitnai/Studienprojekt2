@@ -126,6 +126,7 @@ def save_data(measurements: list[float]):
     """
     Save the measurement data to a file.
 
+
     Args:
     - measurements (list[float]): List of measurement data to be saved.
     """

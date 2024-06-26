@@ -3,6 +3,8 @@ import pandas as pd
 import time as tm
 from typing import Union
 from datetime import datetime
+from timeit  import default_timer
+import keyboard
 
 mesurementsTaken = 0
 bitsToMs = 40181.76
@@ -25,7 +27,7 @@ def convrertStrToListOfFloat(string: str) -> list[float]:
             x = float(mesurement)  # Convert each measurement to float
         except ValueError:
             x = 0.0  # If conversion fails, set the value to 0.0
-        floatMesuremnts += [x]  # Add the float value to the list
+        floatMesuremnts += [x/bitsToMs]  # Add the float value to the list
     return floatMesuremnts
 
 def correctionFaktor(comPort: str) -> list:
@@ -82,7 +84,7 @@ def checkThreshhold(threshhold: float, mesurements: list[float]) -> bool:
             ret = True
     return ret
 
-def track(comPort: str, threshhold: float) -> Union[bool, dict]:
+def track(comPort: str, threshhold: float, mesureing_time: int) -> Union[bool, dict]:
     """
     Track all input from the serial port for 5 minutes. If there is movement for over 30 seconds, return the data; otherwise, return False.
     
@@ -105,7 +107,14 @@ def track(comPort: str, threshhold: float) -> Union[bool, dict]:
     except sr.serialutil.SerialException:
         print("Connection failed")
     print("Watching for earthquake...")
-    while i <= 1200:
+    start_time = default_timer()
+    while (default_timer() - start_time) < float(mesureing_time * 60):
+        if keyboard.is_pressed('esc'):
+            print("Exeting mesuring loop...")
+            break
+
+        remaining_time = round((mesureing_time * 60 - (default_timer() - start_time))/60, 2)
+        print("\r>> Time remaining: {} min.".format(remaining_time), end='')  # Update the remaining time for the user
         if serialPort.in_waiting > 1:  # Check if there is data waiting in the serial buffer
             i += 1
             serialInput = serialPort.readline()  # Read a line of input from the serial port
@@ -130,7 +139,7 @@ def track(comPort: str, threshhold: float) -> Union[bool, dict]:
     else:
         return False
 
-def monitorEarthquake(comPort: str, filePath: str, threshhold: float) -> bool:
+def monitorEarthquake(comPort: str, filePath: str, threshhold: float, mesuring_time: int) -> bool:
     """
     Monitor for earthquakes and save the measurements if detected.
     
@@ -142,7 +151,7 @@ def monitorEarthquake(comPort: str, filePath: str, threshhold: float) -> bool:
     Returns:
     - bool: True if an earthquake is detected and data is saved, otherwise False.
     """
-    mesurement = track(comPort=comPort, threshhold=threshhold)
+    mesurement = track(comPort=comPort, threshhold=threshhold, mesureing_time=mesuring_time)
     if mesurement == False:
         print("No earthquake detected.")
         return False
@@ -160,17 +169,22 @@ filePath = input("Please enter Path for saved Data: ")
 print("You've selected: " + filePath)
 threshhold = float(input("Please enter Threshold: "))
 print("You've selected: " + str(threshhold))
+mesuring_time = input("Enter the mesuring time in min: ")
+print("Youve selected a mesuring time of {} min.".format(mesuring_time))
 counter = -1
 
 # Continuously monitor for earthquakes
+
 while True:
     now = datetime.now()
-    fileName = now.strftime("%d.%m.%y %H:%M:%S")
+    fileName = now.strftime("%d.%m.%y")
     fullPath = filePath + "/" + fileName + "_" + str(mesurementsTaken) + ".csv"
     counter += 1
     if not counter % 5:
         correction = correctionFaktor(comPort=comPort)  # Recalculate correction factor every 5 cycles
-    if monitorEarthquake(comPort=comPort, filePath=fullPath, threshhold=threshhold):
+    if monitorEarthquake(comPort=comPort, filePath=fullPath, threshhold=threshhold, mesuring_time=int(mesuring_time)):
         mesurementsTaken += 1  # Increment the count of measurements taken
     else:
         pass
+
+

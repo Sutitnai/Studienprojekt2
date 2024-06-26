@@ -180,7 +180,7 @@ counter = -1
 
 while True:
     now = datetime.now()
-    fileName = now.strftime("%d.%m.%y")
+    fileName = now.strftime("%y%m%d")
     fullPath = filePath + "/" + fileName + "_" + str(mesurementsTaken) + ".csv"
     counter += 1
     if not counter % 5:
